@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Button,
@@ -16,18 +16,27 @@ function EditPizza({ pizza, onPizzaUpdated }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedPizza, setEditedPizza] = useState({ ...pizza });
 
+  // Funkcja obsługująca kliknięcie przycisku edycji
   const handleEditClick = () => {
     setIsEditing(!isEditing); // Przełączanie stanu edycji
   };
 
+  // Funkcja do obsługi zmiany danych w formularzu
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
 
     if (name === "dodatki") {
+      // Obsługuje dodatki (checkbox)
       setEditedPizza((prevPizza) => {
-        const newDodatki = checked
-          ? [...prevPizza.dodatki, value] // Dodajemy dodatek, jeśli checkbox jest zaznaczony
-          : prevPizza.dodatki.filter((item) => item !== value); // Usuwamy dodatek, jeśli checkbox jest odznaczony
+        let newDodatki = [...prevPizza.dodatki];
+
+        if (checked && !newDodatki.includes(value)) {
+          // Dodajemy dodatek, jeśli nie ma go jeszcze w tablicy
+          newDodatki.push(value);
+        } else if (!checked) {
+          // Usuwamy dodatek, jeśli checkbox jest odznaczony
+          newDodatki = newDodatki.filter((item) => item !== value);
+        }
 
         return { ...prevPizza, dodatki: newDodatki };
       });
@@ -36,6 +45,7 @@ function EditPizza({ pizza, onPizzaUpdated }) {
     }
   };
 
+  // Funkcja do obsługi wysyłania formularza
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -49,6 +59,16 @@ function EditPizza({ pizza, onPizzaUpdated }) {
       })
       .catch((error) => console.error("Błąd edytowania pizzy:", error));
   };
+
+  // Funkcja do sprawdzenia, czy dodatek już istnieje w pizzy
+  const isChecked = (item) => {
+    return editedPizza.dodatki && editedPizza.dodatki.includes(item);
+  };
+
+  useEffect(() => {
+    // Sprawdzamy, czy dodatki są poprawnie wczytane
+    setEditedPizza({ ...pizza });
+  }, [pizza]);
 
   return (
     <div>
@@ -77,44 +97,20 @@ function EditPizza({ pizza, onPizzaUpdated }) {
             <option>Fantazyjna</option>
           </Select>
 
-          <FormControl as="fieldset">
-            <FormLabel>Dodatki</FormLabel>
-
-            <HStack spacing="24px" mt={4}>
+          <FormLabel>Dodatki</FormLabel>
+          <HStack spacing="24px" mt={4}>
+            {["ser", "pomidor", "szynka", "oliwki"].map((item) => (
               <Checkbox
-                value="ser"
+                key={item}
+                value={item}
                 name="dodatki"
-                checked={editedPizza.dodatki.includes("ser")}
+                checked={isChecked(item)} // Sprawdzamy, czy dany dodatek jest w tablicy
                 onChange={handleChange}
               >
-                Ser
+                {item.charAt(0).toUpperCase() + item.slice(1)}
               </Checkbox>
-              <Checkbox
-                value="pomidor"
-                name="dodatki"
-                checked={editedPizza.dodatki.includes("pomidor")}
-                onChange={handleChange}
-              >
-                Pomidor
-              </Checkbox>
-              <Checkbox
-                value="szynka"
-                name="dodatki"
-                checked={editedPizza.dodatki.includes("szynka")}
-                onChange={handleChange}
-              >
-                Szynka
-              </Checkbox>
-              <Checkbox
-                value="oliwki"
-                name="dodatki"
-                checked={editedPizza.dodatki.includes("oliwki")}
-                onChange={handleChange}
-              >
-                Oliwki
-              </Checkbox>
-            </HStack>
-          </FormControl>
+            ))}
+          </HStack>
 
           <FormLabel>Cena</FormLabel>
           <Input
