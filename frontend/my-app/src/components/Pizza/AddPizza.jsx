@@ -139,7 +139,9 @@ function AddPizza({ onPizzaAdded }) {
           onChange={handleChange}
           required
         />
-        <Button type="submit">Dodaj pizzę</Button>
+        <Button m={5} type="submit">
+          Dodaj pizzę
+        </Button>
       </form>
     </div>
   );
