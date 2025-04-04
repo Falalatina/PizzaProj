@@ -4,8 +4,10 @@ import {
   Button,
   FormControl,
   FormLabel,
+  HStack,
   Input,
   Select,
+  Checkbox,
 } from "@chakra-ui/react";
 
 const API_URL = "http://127.0.0.1:5000"; // Adres backendu
@@ -14,13 +16,25 @@ function AddPizza({ onPizzaAdded }) {
   const [pizza, setPizza] = useState({
     nazwa: "",
     kategoria: "",
-    dodatki: "",
+    dodatki: [], // Zmieniamy na tablicę
     cena: "",
     zdjecie: "",
   });
 
   const handleChange = (e) => {
-    setPizza({ ...pizza, [e.target.name]: e.target.value });
+    const { name, value, checked } = e.target;
+
+    if (name === "dodatki") {
+      setPizza((prevPizza) => {
+        const newDodatki = checked
+          ? [...prevPizza.dodatki, value] // Dodajemy dodatek, jeśli checkbox jest zaznaczony
+          : prevPizza.dodatki.filter((item) => item !== value); // Usuwamy dodatek, jeśli checkbox jest odznaczony
+
+        return { ...prevPizza, dodatki: newDodatki };
+      });
+    } else {
+      setPizza({ ...pizza, [name]: value });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -28,14 +42,13 @@ function AddPizza({ onPizzaAdded }) {
     axios
       .post(`${API_URL}/pizza`, {
         ...pizza,
-        dodatki: pizza.dodatki.split(",").map((item) => item.trim()), // Zamiana stringa na tablicę
         cena: parseFloat(pizza.cena),
       })
       .then(() => {
         setPizza({
           nazwa: "",
           kategoria: "",
-          dodatki: "",
+          dodatki: [],
           cena: "",
           zdjecie: "",
         });
@@ -59,7 +72,6 @@ function AddPizza({ onPizzaAdded }) {
         />
         <FormLabel>Kategoria</FormLabel>
         <Select
-          type="text"
           name="kategoria"
           placeholder="Kategoria"
           value={pizza.kategoria}
@@ -69,15 +81,44 @@ function AddPizza({ onPizzaAdded }) {
           <option>Klasyczna</option>
           <option>Fantazyjna</option>
         </Select>
-        <FormLabel>Dodatki (oddzielone przecinkami)</FormLabel>
-        <Input
-          type="text"
-          name="dodatki"
-          placeholder="Dodatki (oddzielone przecinkami)"
-          value={pizza.dodatki}
-          onChange={handleChange}
-          required
-        />
+        <FormControl as="fieldset">
+          <FormLabel>Dodatki</FormLabel>
+
+          <HStack spacing="24px" mt={4}>
+            <Checkbox
+              value="ser"
+              name="dodatki"
+              checked={pizza.dodatki.includes("ser")}
+              onChange={handleChange}
+            >
+              Ser
+            </Checkbox>
+            <Checkbox
+              value="pomidor"
+              name="dodatki"
+              checked={pizza.dodatki.includes("pomidor")}
+              onChange={handleChange}
+            >
+              Pomidor
+            </Checkbox>
+            <Checkbox
+              value="szynka"
+              name="dodatki"
+              checked={pizza.dodatki.includes("szynka")}
+              onChange={handleChange}
+            >
+              Szynka
+            </Checkbox>
+            <Checkbox
+              value="oliwki"
+              name="dodatki"
+              checked={pizza.dodatki.includes("oliwki")}
+              onChange={handleChange}
+            >
+              Oliwki
+            </Checkbox>
+          </HStack>
+        </FormControl>
         <FormLabel>Cena</FormLabel>
         <Input
           type="number"
