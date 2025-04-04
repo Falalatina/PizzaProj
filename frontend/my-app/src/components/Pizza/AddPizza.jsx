@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
   Button,
@@ -13,6 +14,7 @@ import {
 const API_URL = "http://127.0.0.1:5000"; // Adres backendu
 
 function AddPizza({ onPizzaAdded }) {
+  const { pizzaId } = useParams();
   const [pizza, setPizza] = useState({
     nazwa: "",
     kategoria: "",
