@@ -8,12 +8,18 @@ from pymongo.server_api import ServerApi
 app = Flask(__name__)
 CORS(app)  # Pozwala na dostęp z frontendu
 
+from dotenv import load_dotenv
+load_dotenv()
+
+uri = os.getenv("URI")
+dataBase = os.getenv("DB")
+col = os.getenv("COLLECTION")
 # Połączenie z MongoDB
-uri = "mongodb+srv://karolina40gorska17:A9B5juzEbL32XZSJ@pizza.casjkdr.mongodb.net/Pizza?retryWrites=true&w=majority"
+
 client = MongoClient(uri, server_api=ServerApi('1'))
 
-db = client["Pizzeria"]  
-collection = db["Pizzas"]   
+db = client[dataBase]  
+collection = db[col]   
 
 # 🔹 Funkcja do konwersji ObjectId na string
 def serialize_pizza(pizza):
