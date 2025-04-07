@@ -15,14 +15,14 @@ import os
 load_dotenv()
 
 PASSWORD = os.getenv("PASSWORD")
-uri = f"mongodb+srv://karolina40gorska17:{PASSWORD}@pizza.casjkdr.mongodb.net/Pizza?retryWrites=true&w=majority"
+USER = os.getenv("USER")
+DATABASE_NAME  = os.getenv("DATABASE_NAME ")
+COLLECTION_NAME  = os.getenv("COLLECTION_NAME ")
 
-
-# Połączenie z MongoDB
-
+uri = f"mongodb+srv://{USER}:{PASSWORD}@pizza.casjkdr.mongodb.net/Pizza?retryWrites=true&w=majority"
 client = MongoClient(uri, server_api=ServerApi('1'))
-db = client["Pizzeria"]  
-collection = db["Pizzas"]   
+db = client[str(DATABASE_NAME)]  
+collection = db[str(COLLECTION_NAME)]   
 
 # 🔹 Funkcja do konwersji ObjectId na string
 def serialize_pizza(pizza):
