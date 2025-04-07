@@ -8,6 +8,9 @@ import {
   Input,
   Select,
   Checkbox,
+  GridItem,
+  Grid,
+  Text,
 } from "@chakra-ui/react";
 
 const API_URL = "http://127.0.0.1:5000"; // Adres backendu
@@ -62,6 +65,8 @@ function EditPizza({ pizza, onPizzaUpdated }) {
 
   // Funkcja do sprawdzenia, czy dodatek już istnieje w pizzy
   const isChecked = (item) => {
+    console.log(editedPizza.dodatki.includes(item));
+
     return editedPizza.dodatki && editedPizza.dodatki.includes(item);
   };
 
@@ -72,7 +77,7 @@ function EditPizza({ pizza, onPizzaUpdated }) {
 
   return (
     <div>
-      <Button colorScheme="teal" onClick={handleEditClick}>
+      <Button colorScheme="teal" m={2} onClick={handleEditClick}>
         {isEditing ? "Anuluj" : "Edytuj"}
       </Button>
 
@@ -86,7 +91,7 @@ function EditPizza({ pizza, onPizzaUpdated }) {
             onChange={handleChange}
             required
           />
-          <FormLabel>Kategoria</FormLabel>
+          <FormLabel mt={2}>Kategoria</FormLabel>
           <Select
             name="kategoria"
             value={editedPizza.kategoria}
@@ -97,22 +102,33 @@ function EditPizza({ pizza, onPizzaUpdated }) {
             <option>Fantazyjna</option>
           </Select>
 
-          <FormLabel>Dodatki</FormLabel>
-          <HStack spacing="24px" mt={4}>
-            {["ser", "pomidor", "szynka", "oliwki"].map((item) => (
-              <Checkbox
-                key={item}
-                value={item}
-                name="dodatki"
-                checked={isChecked(item)} // Sprawdzamy, czy dany dodatek jest w tablicy
-                onChange={handleChange}
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-              </Checkbox>
+          <FormLabel mt={2}>Dodatki</FormLabel>
+          <Grid m={4} templateColumns="repeat(3, 1fr)" gap={5}>
+            {[
+              "ser",
+              "pomidor",
+              "szynka",
+              "oliwki",
+              "pepperoni",
+              "parmezan",
+              "ricotta",
+              "blue",
+            ].map((item) => (
+              <GridItem>
+                <input
+                  type="checkbox"
+                  key={item}
+                  value={item}
+                  name="dodatki"
+                  checked={isChecked(item)} // Sprawdzamy, czy dany dodatek jest w tablicy
+                  onChange={handleChange}
+                />
+                <Text>{item.charAt(0).toUpperCase() + item.slice(1)}</Text>
+              </GridItem>
             ))}
-          </HStack>
+          </Grid>
 
-          <FormLabel>Cena</FormLabel>
+          <FormLabel mt={2}>Cena</FormLabel>
           <Input
             type="number"
             name="cena"
@@ -121,7 +137,7 @@ function EditPizza({ pizza, onPizzaUpdated }) {
             required
           />
 
-          <FormLabel>Link do zdjęcia</FormLabel>
+          <FormLabel mt={2}>Link do zdjęcia</FormLabel>
           <Input
             type="text"
             name="zdjecie"
@@ -130,7 +146,7 @@ function EditPizza({ pizza, onPizzaUpdated }) {
             required
           />
 
-          <Button mt="4" colorScheme="blue" type="submit">
+          <Button mt="4" mb={"4"} colorScheme="blue" type="submit">
             Zapisz zmiany
           </Button>
         </form>
