@@ -16,8 +16,8 @@ load_dotenv()
 
 PASSWORD = os.getenv("PASSWORD")
 USER = os.getenv("USER")
-DATABASE_NAME  = os.getenv("DATABASE_NAME ")
-COLLECTION_NAME  = os.getenv("COLLECTION_NAME ")
+DATABASE_NAME  = os.getenv("DATABASE_NAME")
+COLLECTION_NAME  = os.getenv("COLLECTION_NAME")
 
 uri = f"mongodb+srv://{USER}:{PASSWORD}@pizza.casjkdr.mongodb.net/Pizza?retryWrites=true&w=majority"
 client = MongoClient(uri, server_api=ServerApi('1'))
