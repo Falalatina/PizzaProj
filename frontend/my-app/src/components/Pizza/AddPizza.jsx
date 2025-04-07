@@ -87,38 +87,25 @@ function AddPizza({ onPizzaAdded }) {
           <FormLabel>Dodatki</FormLabel>
 
           <HStack spacing="24px" mt={4}>
-            <Checkbox
-              value="ser"
-              name="dodatki"
-              checked={pizza.dodatki.includes("ser")}
-              onChange={handleChange}
-            >
-              Ser
-            </Checkbox>
-            <Checkbox
-              value="pomidor"
-              name="dodatki"
-              checked={pizza.dodatki.includes("pomidor")}
-              onChange={handleChange}
-            >
-              Pomidor
-            </Checkbox>
-            <Checkbox
-              value="szynka"
-              name="dodatki"
-              checked={pizza.dodatki.includes("szynka")}
-              onChange={handleChange}
-            >
-              Szynka
-            </Checkbox>
-            <Checkbox
-              value="oliwki"
-              name="dodatki"
-              checked={pizza.dodatki.includes("oliwki")}
-              onChange={handleChange}
-            >
-              Oliwki
-            </Checkbox>
+            {[
+              "ser",
+              "pomidor",
+              "szynka",
+              "oliwki",
+              "pepperoni",
+              "parmezan",
+              "ricotta",
+              "blue",
+            ].map((item) => (
+              <Checkbox
+                value={item}
+                name="dodatki"
+                checked={pizza.dodatki.includes("ser")}
+                onChange={handleChange}
+              >
+                {item}
+              </Checkbox>
+            ))}
           </HStack>
         </FormControl>
         <FormLabel>Cena</FormLabel>
