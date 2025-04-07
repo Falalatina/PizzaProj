@@ -5,13 +5,19 @@ import os
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
+
 app = Flask(__name__)
 CORS(app)  # Pozwala na dostęp z frontendu
 
 from dotenv import load_dotenv
-load_dotenv('.env')
+import os 
 
-PASSWORD = os.getenv("PASSWORD")
+load_dotenv()
+
+my_id = os.getenv("PASSWORD")
+print(my_id)
+
+PASSWORD = str(my_id)
 uri = f"mongodb+srv://karolina40gorska17:{PASSWORD}@pizza.casjkdr.mongodb.net/Pizza?retryWrites=true&w=majority"
 
 
