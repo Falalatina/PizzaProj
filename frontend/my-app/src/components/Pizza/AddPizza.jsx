@@ -9,6 +9,7 @@ import {
   Input,
   Select,
   Checkbox,
+  Heading,
 } from "@chakra-ui/react";
 
 const API_URL = "http://127.0.0.1:5000"; // Adres backendu
@@ -60,8 +61,16 @@ function AddPizza({ onPizzaAdded }) {
   };
 
   return (
-    <div>
-      <h2>Dodaj nową pizzę</h2>
+    <div style={{ backgroundColor: "white", padding: 10, borderRadius: 5 }}>
+      <Heading
+        size="lg"
+        color="orange.500"
+        borderBottom="2px solid #F97316"
+        pb={1}
+      >
+        + Dodaj nową pizzę
+      </Heading>
+
       <form onSubmit={handleSubmit}>
         <FormLabel>Nazwa</FormLabel>
         <Input
