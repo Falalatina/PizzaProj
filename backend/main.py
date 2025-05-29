@@ -116,7 +116,7 @@ def create_order():
             "data_aktualizacji": datetime.utcnow()
         }
         
-        # Dodanie do bazy danych
+        # Dodanie 
         result = orders_collection.insert_one(full_order)
         
         return jsonify({
@@ -131,13 +131,13 @@ def create_order():
 @app.route('/api/orders', methods=['GET'])
 def get_orders():
     try:
-        # Możliwość filtrowania po statusie
+     
         status = request.args.get('status')
         query = {"status": status} if status else {}
         
         orders = list(orders_collection.find(query).sort("data_zamowienia", -1).limit(100))
         
-        # Konwersja ObjectId na string
+       
         for order in orders:
             order['_id'] = str(order['_id'])
         
@@ -195,7 +195,7 @@ def delete_order(order_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Endpoint do pobierania dostępnych pizz (API version)
+
 @app.route('/api/pizzas', methods=['GET'])
 def get_pizzas_api():
     try:

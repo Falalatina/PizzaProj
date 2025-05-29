@@ -186,13 +186,11 @@ const OrderForm = ({ pizzas = [], subtotal = 0, onOrderComplete }) => {
     }
   };
 
-  // Zlicz ilość każdej pizzy (po _id)
   const pizzaQuantities = pizzas.reduce((acc, pizza) => {
     acc[pizza._id] = (acc[pizza._id] || 0) + 1;
     return acc;
   }, {});
 
-  // Unikalne pizze z ilością
   const uniquePizzas = pizzas.reduce((acc, pizza) => {
     if (!acc.find((p) => p._id === pizza._id)) {
       acc.push({
