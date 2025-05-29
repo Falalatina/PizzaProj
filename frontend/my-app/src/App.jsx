@@ -95,10 +95,10 @@ function App() {
             </Button>
           </div>
         </div>
-        {isAdmin ? <AddPizza onPizzaAdded={() => setRefresh(!refresh)} /> : ""}
 
         {openCart ? <OrderForm subtotal={subtotal} pizzas={pizzas} /> : ""}
       </div>
+      {isAdmin ? <AddPizza onPizzaAdded={() => setRefresh(!refresh)} /> : ""}
 
       <PizzaList
         key={refresh}
